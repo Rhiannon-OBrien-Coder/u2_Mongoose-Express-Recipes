@@ -13,6 +13,19 @@ const getInstructionById = async (req, res) => {
     }
 }
 
+const getInstructionByRecipe = async (req, res) => {
+    try { 
+        const i = await Instruction.find( {'recipe': req.params.recipe})
+        console.log(bike)
+        if (i) {
+            return res.json(i);
+        }
+        return res.status(404).send('Instruction type not found');
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
+
 //create a new plant -> POST
 const createInstruction = async (req, res) => {
     try {
@@ -57,6 +70,7 @@ const updateInstruction = async (req, res) => {
 
 module.exports = {
     getInstructionById,
+    getInstructionByRecipe,
     createInstruction,
     updateInstruction,
     deleteInstruction

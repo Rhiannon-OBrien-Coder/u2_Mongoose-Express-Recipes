@@ -9,6 +9,19 @@ const getAllRecipes = async (req, res) => {
     }
 }
 
+const getRecipeByName = async (req, res) => {
+    try { 
+        const recipe = await Recipe.find( {'name': req.params.name})
+        console.log(recipe)
+        if (recipe) {
+            return res.json(recipe);
+        }
+        return res.status(404).send('Recipe not found');
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+  }
+
 const getRecipesById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -66,6 +79,7 @@ const updateRecipe = async (req, res) => {
 
 module.exports = {
     getAllRecipes,
+    getRecipeByName,
     getRecipesById,
     createRecipe,
     updateRecipe,
