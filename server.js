@@ -2,7 +2,9 @@ const express = require('express')
 const db = require('./db')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
-const plantController = require('./controllers/plantController')
+const cuisinetypeController = require('./controllers/cuisinetypeController')
+const recipeController = require('./controllers/recipeController')
+const instructionController = require('./controllers/instructionController')
 
 const PORT = process.env.PORT || 3001
 
@@ -15,13 +17,24 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
 
 app.get('/', (req, res) => res.send('This is our landing page!'))
 
-app.get('/plants', plantController.getAllPlants)
+//cuisines
+app.get('/cuisines', cuisinetypeController.getAllCuisinetypes)
+app.get('/cuisines/:id', cuisinetypeController.getTypesById)
+app.post('/cuisines', cuisinetypeController.createCuisinetype)
+app.put('/cuisines/:id', cuisinetypeController.updateCuisine)
+app.delete('/cuisines/:id', cuisinetypeController.deleteCuisine)
 
-app.get('/plants/:id', plantController.getPlantById)
+//recipes
+app.get('/recipes', recipeController.getAllRecipes)
+app.get('/recipes/:id', recipeController.getRecipesById)
+app.post('/recipes', recipeController.createRecipe)
+app.put('/recipes/:id', recipeController.updateRecipe)
+app.delete('/recipes/:id', recipeController.deleteRecipe)
 
-//post goes to the INDEX route because we are adding something new
-app.post('/plants', plantController.createPlant)
+//instructions
+app.get('/instructions/:id', instructionController.getInstructionById)
+app.post('/instructions', instructionController.createInstruction)
+app.put('/instructions/:id', instructionController.updateInstruction)
+app.delete('/instructions/:id', instructionController.deleteInstruction)
 
-//update and delete will need to be in a SHOW route because we're targeting one item
-app.put('/plants/:id', plantController.updatePlant)
-app.delete('/plants/:id', plantController.deletePlant)
+app.get('/*', (req, res) => res.send({ error: "404 page not found" }))
